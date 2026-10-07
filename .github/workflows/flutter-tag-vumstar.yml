@@ -1,18 +1,22 @@
-name: Flutter Tag Build VUMSTAR
+name: Flutter Tag Build OnlyWin
 
 on:
   workflow_dispatch:
+    inputs:
+      upload-tag:
+        description: 'Tag name for release (e.g. 1.5.0.4)'
+        type: string
+        required: true
+        default: 'nightly'
   push:
     tags:
-      - 'v[0-9]+.[0-9]+.[0-9]+'
-      - '[0-9]+.[0-9]+.[0-9]+'
-      - 'v[0-9]+.[0-9]+.[0-9]+-[0-9]+'
-      - '[0-9]+.[0-9]+.[0-9]+-[0-9]+'
+      - 'v*'
+      - '[0-9]*'
 
 jobs:
   run-flutter-tag-build:
-    uses: ./.github/workflows/flutter-build-vumstar.yml
+    uses: ./.github/workflows/flutter-build-onlywin.yml
     secrets: inherit
     with:
       upload-artifact: true
-      upload-tag: ${{ github.ref_name }}
+      upload-tag: ${{ inputs.upload-tag || github.ref_name }}
